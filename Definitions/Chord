@@ -1,0 +1,29 @@
+class Chord:
+    def __init__(self, symbol, degrees, next, inversion):
+        self.symbol = symbol
+        self.degrees = degrees
+        self.next = next
+        self.inversion = inversion
+        
+    def hasMelodicNote(self, note):
+        result = note in self.degrees
+        return result
+    
+    def getSuccessors(self):
+        return self.next
+    
+    def hasParallels(self, nextChord, note1, note2):
+        bassNote1 = self.degrees[self.inversion] 
+        bassNote2 = nextChord.degrees[nextChord.inversion]
+        interval1 = (note1 - bassNote1)%7
+        interval2 = (note2 - bassNote2)%7
+        #need to somehow deal with case where current chord and next chord are identical
+        if interval1 == interval2:
+            if interval1 == 0:
+                return True
+            elif interval1 == 4:
+                if note1 == 4 or note2 == 4:
+                    return False
+                else:
+                    return True
+          
