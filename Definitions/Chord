@@ -11,7 +11,7 @@ class Chord:
     def getSuccessors(self, note):
         successors = list()
         for c in self.next:
-            if c.hasScaleDegree:
+            if c.hasScaleDegree(note):
                 list.append(c)
         return successors
     
