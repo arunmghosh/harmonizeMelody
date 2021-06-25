@@ -1,16 +1,19 @@
 class Chord:
-    def __init__(self, symbol, degrees, next, inversion):
-        self.symbol = symbol
-        self.degrees = degrees
-        self.next = next
-        self.inversion = inversion
+    def __init__(self, definition):
+        self.symbol = definition.symbol
+        self.degrees = definition.degrees
+        self.next = definition.next
+        self.inversion = definition.inversion
         
-    def hasMelodicNote(self, note):
-        result = note in self.degrees
-        return result
+    def hasScaleDegree(self, note):
+        return note in self.degrees
     
-    def getSuccessors(self):
-        return self.next
+    def getSuccessors(self, note):
+        successors = list()
+        for c in self.next:
+            if c.hasScaleDegree:
+                list.append(c)
+        return successors
     
     def hasParallels(self, nextChord, note1, note2):
         bassNote1 = self.degrees[self.inversion] 
