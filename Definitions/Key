@@ -1,0 +1,27 @@
+class Key:
+    def __init__(self, symbol, startNote, pattern, sharps, flats):
+        self.symbol = symbol
+        self.startNote = startNote
+        self.pattern = pattern
+        self.sharps = sharps
+        self.flats = flats
+    
+    def usesSharps(self):
+        keysWithSharps = ["G","D","A","E","B","F#","C#"]
+        return this.startNote in keysWithSharps
+    
+    def generateScale():
+        scale = list()
+        if this.usesSharps():
+            for note in pattern:
+                list.append(sharps[note])
+        else:
+            for note in pattern:
+                list.append(flats[note])
+        return scale
+    
+    def getScaleDegree(note):
+        if note in self.generateScale():
+            return list.index(note) + 1
+        else:
+            print("Error, note is not diatonic to ", symbol)
