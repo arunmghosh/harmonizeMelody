@@ -7,8 +7,8 @@ class Key:
         self.flats = flats
     
     def usesSharps(self):
-        keysWithSharps = ["G","D","A","E","B","F#","C#"]
-        return this.startNote in keysWithSharps
+        keysWithSharps = ["G","D","A","E","B","F#","C#","Em","Bm","F#m,"C#m"]
+        return this.symbol in keysWithSharps
     
     def generateScale():
         scale = list()
