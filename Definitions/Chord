@@ -1,18 +1,27 @@
 class Chord:
-    def __init__(self, definition):
+    def __init__(self, definition, inversion):
         self.symbol = definition.symbol
         self.degrees = definition.degrees
         self.next = definition.next
-        self.inversion = definition.inversion
+        self.inversion = inversion
         
     def hasScaleDegree(self, note):
         return note in self.degrees
-    
+
+    @classmethod
+    def chordFromSymbol(cls, symbol, inversion):
+        fileName = symbol + "_info.json"
+        file = open(fileName)
+        definition = json.load(file)
+        return cls(definition, inversion)
+        
     def getSuccessors(self, note):
         successors = list()
-        for c in self.next:
-            if c.hasScaleDegree(note):
-                list.append(c)
+        for d in self.next: #d is a dictionary
+            for c in d[self.inversion]: #c is a number
+                candidate = Chord.chordFromSymbol(d["symbol"], c)
+                if candidate.hasScaleDegree(note):
+                successors.append(candidate)
         return successors
     
     def hasParallels(self, nextChord, note1, note2):
