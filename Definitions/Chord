@@ -21,7 +21,7 @@ class Chord:
             for c in d[self.inversion]: #c is a number
                 candidate = Chord.chordFromSymbol(d["symbol"], c)
                 if candidate.hasScaleDegree(note):
-                successors.append(candidate)
+                    successors.append(candidate)
         return successors
     
     def hasParallels(self, nextChord, note1, note2):
