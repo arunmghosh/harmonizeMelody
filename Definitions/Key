@@ -1,1 +1,26 @@
-
+class Key:
+    def __init__(self, symbol, startNote, isMajor):
+        this.symbol = symbol
+        this.startNote = startNote%12
+        this.isMajor = isMajor
+    
+    def getScale(self):
+        scale = list()
+        counter = 0
+        if this.isMajor:
+            pattern = [2,2,1,2,2,2,1]
+            for step in pattern:
+                note = (counter + step)%12
+                scale.append(note)
+        else:
+            pattern = [2,1,2,2,1,2,2]
+            for step in pattern:
+                note = (counter + step)%12
+                scale.append(note)
+        return scale
+    
+    def getScaleDegree(self, note):
+        if note%12 in self.getScale:
+            return scale.index(note%12) + 1
+        else:
+            print("Error, pitch is not diatonic to ", this.symbol)
