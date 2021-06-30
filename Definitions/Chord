@@ -11,9 +11,9 @@ class Chord:
     @classmethod
     def chordFromSymbol(cls, symbol, inversion):
         fileName = symbol + "_info.json"
-        file = open(fileName)
-        definition = json.load(file)
-        return cls(definition, inversion)
+        with open(filename, "r") as chord_json:
+            definition = json.load(chord_json)
+            return cls(definition, inversion)
         
     def getSuccessors(self, note):
         successors = list()
