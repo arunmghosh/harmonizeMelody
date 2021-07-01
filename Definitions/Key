@@ -27,4 +27,4 @@ class Key:
         if note%12 in self.getScale().keys():
             return scale[note%12]
         else:
-            raise ValueError("this pitch in non-diatonic")
+            raise ValueError("this pitch is non-diatonic")
