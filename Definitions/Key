@@ -1,26 +1,30 @@
 class Key:
-    def __init__(self, symbol, startNote, isMajor):
-        this.symbol = symbol
-        this.startNote = startNote%12
-        this.isMajor = isMajor
+    def __init__(self, symbol, tonic, isMajor):
+        self.symbol = symbol
+        self.tonic = tonic%12
+        self.isMajor = isMajor
+        self.scale = this.getScale()
     
     def getScale(self):
-        scale = list()
-        counter = 0
-        if this.isMajor:
+        scale = dict{tonic:"1"}
+        counter = self.tonic
+        degreeCounter = 2
+        if self.isMajor:
             pattern = [2,2,1,2,2,2,1]
             for step in pattern:
                 note = (counter + step)%12
-                scale.append(note)
+                scale[note] = degreeCounter
+                degreeCounter += 1
         else:
             pattern = [2,1,2,2,1,2,2]
             for step in pattern:
                 note = (counter + step)%12
-                scale.append(note)
+                scale[note] = degreeCounter
+                degreeCounter += 1
         return scale
     
     def getScaleDegree(self, note):
-        if note%12 in self.getScale:
-            return scale.index(note%12) + 1
+        if note%12 in self.getScale().keys():
+            return scale[note%12]
         else:
-            print("Error, pitch is not diatonic to ", this.symbol)
+            raise ValueError("this pitch in non-diatonic")
