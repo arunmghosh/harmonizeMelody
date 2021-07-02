@@ -10,13 +10,13 @@ class Key:
         counter = self.tonic
         degreeCounter = 2
         if self.isMajor:
-            pattern = [2,2,1,2,2,2,1]
+            pattern = [2,2,1,2,2,2]
             for step in pattern:
                 note = (counter + step)%12
                 scale[note] = degreeCounter
                 degreeCounter += 1
         else:
-            pattern = [2,1,2,2,1,2,2]
+            pattern = [2,1,2,2,1,2]
             for step in pattern:
                 note = (counter + step)%12
                 scale[note] = degreeCounter
@@ -24,7 +24,7 @@ class Key:
         return scale
     
     def getScaleDegree(self, note):
-        if note%12 in self.getScale().keys():
+        if note%12 in self.getScale():
             return scale[note%12]
         else:
             raise ValueError("this pitch is non-diatonic")
