@@ -21,13 +21,23 @@ def get_notes(instrument_type, path):
 	except Exception as e:
 		print(path, " did not work, please try again")
 		pass
+	
+def getChordPalette(symbols):
+	chords = list()
+	for s in symbols:
+		chords.append(Chord.chordFromSymbol, s, 0)
+		chords.append(Chord.chordFromSymbol, s, 1)
+		chords.append(Chord.chordFromSymbol, s, 2)
+	return chords
 
+def getFirstChord(note, palette):
+	
 
 def main():
 	# retrieve MIDI file
 	address = r"/Users/arun/Documents/testMelody1.mid"  # file path
 
-	print(get_notes("Piano",address))
+	melody = get_notes("Piano",address)
 
 
 if __name__ == '__main__':
