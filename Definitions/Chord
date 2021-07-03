@@ -4,7 +4,10 @@ class Chord:
         self.degrees = definition.degrees
         self.next = definition.next
         self.inversion = inversion
-        
+    
+    def getSymbol(self):
+        return self.symbol
+    
     def hasScaleDegree(self, note):
         return note in self.degrees
 
