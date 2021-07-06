@@ -1,0 +1,86 @@
+from music21 import *
+
+
+# extract the notes with a function
+def get_notes(instrument_type, path):
+	try:
+		midi = converter.parse(path)
+		parts = instrument.partitionByInstrument(midi)
+		notes = []
+		for music_instrument in range(len(parts)):
+			if parts.parts[music_instrument].id in instrument_type:
+				for element_by_offset in stream.iterator.OffsetIterator(parts[music_instrument]):
+					for entry in element_by_offset:
+						if isinstance(entry, note.Note):
+							notes.append(str(entry.pitch.midi))
+						elif isinstance(entry, note.Rest):
+							notes.append('Rest')
+		return notes
+
+	# handle errors (for example, MIDI file could be corrupted)
+	except Exception as e:
+		print(path, " did not work, please try again")
+		pass
+	
+def getChordPalette(symbols):
+	chords = list()
+	for s in symbols:
+		chords.append(Chord.chordFromSymbol(s, 0))
+		chords.append(Chord.chordFromSymbol(s, 1))
+		chords.append(Chord.chordFromSymbol(s, 2))
+	return chords
+  
+def getChordChoices(note, palette):
+  choices = list()
+  for chord in palette:
+    if chord.hasScaleDegree(note):
+      choices.append(c)
+  return choices
+  
+def createNode(chord, note, place): #will implement IDs soon
+	info = dict{} #chord, melodic note, and places it occurs in the progression
+	info["chord"] = chord
+  info["note"] = note
+  places = list[place] #list of indicies, so the 1st note is represented by 0
+  info["places"] = places 
+  return info
+  
+def updateNode(node, otherPlace): #node is a dictionary
+  node["places"].append(otherPlace)
+  return
+  
+def getNode(note, nodes):
+  for n in nodes:
+    if n["note"] == note:
+      return n
+  print("node not found") #this is for debugging only, will remove later
+  return
+  
+def isUnique(note, melody, counter)
+  for n in range(0,counter):
+    if melody[n] == note:
+      return false
+  return true
+
+def getNodes(melody,palette):
+  nodes = list() 
+  counter = 0
+  for note in melody:
+    if isUnique(note, melody, counter):
+      chords = getChordChoices(note, palette)
+        for c in chords:
+          nodes.append(createNode(c, note, counter))
+    else:
+      updateNode(getNode(note, nodes), counter)
+    counter += 1
+  return nodes
+
+def main():
+	# retrieve MIDI file
+	address = r"/Users/arun/Documents/testMelody1.mid"  # file path
+
+	melody = get_notes("Piano",address)
+
+
+if __name__ == '__main__':
+	main()
