@@ -13,12 +13,14 @@ class Key:
             pattern = [2,2,1,2,2,2]
             for step in pattern:
                 note = (counter + step)%12
+                counter = note
                 scale[note] = degreeCounter
                 degreeCounter += 1
         else:
             pattern = [2,1,2,2,1,2]
             for step in pattern:
                 note = (counter + step)%12
+                counter = note
                 scale[note] = degreeCounter
                 degreeCounter += 1
         return scale
@@ -28,3 +30,12 @@ class Key:
             return scale[note%12]
         else:
             raise ValueError("this pitch is non-diatonic")
+    
+    @classmethod
+    def keyFromSymbol(cls, symbol):
+        major = True
+        tonic = symbol #need to change from a string to a midi pitch somehow
+        if "m" in symbol:
+            major = False
+            tonic = symbol[0:len(symbol)-1]
+        return cls(symbol, tonic, major)
