@@ -25,6 +25,12 @@ class Key:
                 degreeCounter += 1
         return scale
     
+    def usesMajorPalette(self):
+        if self.isMajor:
+            return True
+        else:
+            return False
+    
     def getScaleDegree(self, note):
         if note%12 in self.getScale():
             return scale[note%12]
