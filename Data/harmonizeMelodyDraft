@@ -74,12 +74,35 @@ def getNodes(melody,palette):
       updateNode(getNode(note, nodes), counter)
     counter += 1
   return nodes
+	
+def midiToScaleDegrees(midiNumbers, key)
+	degrees = list()
+	for n in midiNumbers:
+		degrees.append(key.getScaleDegree(n))
+	return degrees
 
 def main():
 	# retrieve MIDI file
 	address = r"/Users/arun/Documents/testMelody1.mid"  # file path
 
 	melody = get_notes("Piano",address)
+	keySymbol = input("What is the key of this melody?: ")
+	noteString = keySymbol #need to preserve keySymbol since it is used in creating a key instance
+	if "m" in noteString:
+		noteString = noteString[0:len(noteString-1)] #assuming user will format C major as C and C minor as Cm
+	tonic = note.Note(noteString,4).pitch.midi #need to give the note an octave, but it won't matter once it is converted into a scale degree
+	key = Key.keyFromUser(keySymbol, tonic)
+	degrees = midiToScaleDegrees(melody, key) 
+	
+	#use degrees to generate the nodes
+	romanNumerals = list() #needed to ensure that this is in scope of main() instead of the if/else block
+	if key.usesMajorPalette:
+		romanNumerals = ["I", "ii", "iii", "IV", "V", "vi", "viio"]
+	else:
+		romanNumerals = ["i", "iio", "III", "iv", "v", "VI", "VII"]
+	chordPalette = getChordPalette(romanNumerals)
+	nodes = getNodes(degrees, chordPalette) #this will be passed to scoring algorithm 
+	print(nodes) 
 
 
 if __name__ == '__main__':
