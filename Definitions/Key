@@ -38,8 +38,20 @@ class Key:
             raise ValueError("this pitch is non-diatonic")
     
     @classmethod
-    def keyFromUser(cls, symbol, tonic): #tonic is a midi pitch
+    def keyFromUser(cls, symbol): 
+        tonic = symbol #tonic is a string
         major = True
-        if "m" in symbol:
+        if "m" in tonic:
+            tonic = tonic[0:len(tonic)-1]
             major = False
-        return cls(symbol, tonic, major)
+            
+        #open up chromatic scale json files to convert to midiNumber
+        fileName = "chromaticScale" #value will be changed to a valid filename
+        if "#" in tonic:
+            fileName = "chromaticScaleSharps.json"
+        else:
+            fileName = "chromaticScaleFlats.json"
+        with open(filename, "r") as noteToMidi:
+            midiDict = json.load(noteToMidi)
+            tonicMidi = midiDict[tonic]
+        return cls(symbol, tonicMidi, major)
