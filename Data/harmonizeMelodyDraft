@@ -87,11 +87,7 @@ def main():
 
 	melody = get_notes("Piano",address)
 	keySymbol = input("What is the key of this melody?: ")
-	noteString = keySymbol #need to preserve keySymbol since it is used in creating a key instance
-	if "m" in noteString:
-		noteString = noteString[0:len(noteString-1)] #assuming user will format C major as C and C minor as Cm
-	tonic = note.Note(noteString,4).pitch.midi #need to give the note an octave, but it won't matter once it is converted into a scale degree
-	key = Key.keyFromUser(keySymbol, tonic)
+	key = Key.keyFromUser(keySymbol)
 	degrees = midiToScaleDegrees(melody, key) 
 	
 	#use degrees to generate the nodes
