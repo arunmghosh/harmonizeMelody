@@ -32,10 +32,8 @@ class Key:
             raise ValueError("this pitch is non-diatonic")
     
     @classmethod
-    def keyFromSymbol(cls, symbol):
+    def keyFromUser(cls, symbol, tonic): #tonic is a midi pitch
         major = True
-        tonic = symbol #need to change from a string to a midi pitch somehow
         if "m" in symbol:
             major = False
-            tonic = symbol[0:len(symbol)-1]
         return cls(symbol, tonic, major)
