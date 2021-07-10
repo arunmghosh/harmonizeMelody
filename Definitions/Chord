@@ -1,38 +1,52 @@
+import json
+
+
 class Chord:
     def __init__(self, definition, inversion):
-        self.symbol = definition.symbol
-        self.degrees = definition.degrees
-        self.next = definition.next
+        self.symbol = definition["symbol"]
+        self.degrees = definition["scaleDegrees"]
+        self.next = definition["next"]
         self.inversion = inversion
-    
+
+    def __str__(self):
+        if self.inversion == 0:
+            return self.getSymbol()
+        elif self.inversion == 1:
+            return self.getSymbol() + "6"
+        else:
+            return self.getSymbol() + "64"
+
     def getSymbol(self):
         return self.symbol
-    
+
+    def getInversion(self):
+        return self.inversion
+
     def hasScaleDegree(self, note):
         return note in self.degrees
 
     @classmethod
     def chordFromSymbol(cls, symbol, inversion):
         fileName = symbol + "_info.json"
-        with open(filename, "r") as chord_json:
+        with open(fileName, "r") as chord_json:
             definition = json.load(chord_json)
             return cls(definition, inversion)
-        
+
     def getSuccessors(self, note):
         successors = list()
-        for d in self.next: #d is a dictionary
-            for c in d[self.inversion]: #c is a number
+        for d in self.next:  # d is a dictionary
+            for c in d[self.inversion]:  # c is a number
                 candidate = Chord.chordFromSymbol(d["symbol"], c)
                 if candidate.hasScaleDegree(note):
                     successors.append(candidate)
         return successors
-    
+
     def hasParallels(self, nextChord, note1, note2):
-        bassNote1 = self.degrees[self.inversion] 
+        bassNote1 = self.degrees[self.inversion]
         bassNote2 = nextChord.degrees[nextChord.inversion]
-        interval1 = (note1 - bassNote1)%7
-        interval2 = (note2 - bassNote2)%7
-        #need to somehow deal with case where current chord and next chord are identical
+        interval1 = (note1 - bassNote1) % 7
+        interval2 = (note2 - bassNote2) % 7
+        # need to somehow deal with case where current chord and next chord are identical
         if interval1 == interval2:
             if interval1 == 0:
                 return True
@@ -41,4 +55,3 @@ class Chord:
                     return False
                 else:
                     return True
-          
