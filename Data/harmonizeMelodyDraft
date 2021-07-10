@@ -1,105 +1,132 @@
 from music21 import *
+from Chord import Chord
+from Key import Key
 
 
 # extract the notes with a function
 def get_notes(instrument_type, path):
-	try:
-		midi = converter.parse(path)
-		parts = instrument.partitionByInstrument(midi)
-		notes = []
-		for music_instrument in range(len(parts)):
-			if parts.parts[music_instrument].id in instrument_type:
-				for element_by_offset in stream.iterator.OffsetIterator(parts[music_instrument]):
-					for entry in element_by_offset:
-						if isinstance(entry, note.Note):
-							notes.append(str(entry.pitch.midi))
-						elif isinstance(entry, note.Rest):
-							notes.append('Rest')
-		return notes
+    try:
+        midiData = converter.parse(path)
+        parts = instrument.partitionByInstrument(midiData)
+        notes = []
+        for music_instrument in range(len(parts)):
+            if parts.parts[music_instrument].id in instrument_type:
+                for element_by_offset in stream.iterator.OffsetIterator(parts[music_instrument]):
+                    for entry in element_by_offset:
+                        if isinstance(entry, note.Note):
+                            notes.append(str(entry.pitch.midi))
+                        elif isinstance(entry, note.Rest):
+                            notes.append('Rest')
+        return notes
 
-	# handle errors (for example, MIDI file could be corrupted)
-	except Exception as e:
-		print(path, " did not work, please try again")
-		pass
-	
+    # handle errors (for example, MIDI file could be corrupted)
+    except Exception as e:
+        print(path, " did not work, please try again")
+        pass
+
+
 def getChordPalette(symbols):
-	chords = list()
-	for s in symbols:
-		chords.append(Chord.chordFromSymbol(s, 0))
-		chords.append(Chord.chordFromSymbol(s, 1))
-		chords.append(Chord.chordFromSymbol(s, 2))
-	return chords
-  
-def getChordChoices(note, palette):
-  choices = list()
-  for chord in palette:
-    if chord.hasScaleDegree(note):
-      choices.append(c)
-  return choices
-  
-def createNode(chord, note, place): #will implement IDs soon
-	info = dict{} #chord, melodic note, and places it occurs in the progression
-	info["chord"] = chord
-  info["note"] = note
-  places = list[place] #list of indicies, so the 1st note is represented by 0
-  info["places"] = places 
-  return info
-  
-def updateNode(node, otherPlace): #node is a dictionary
-  node["places"].append(otherPlace)
-  return
-  
-def getNode(note, nodes):
-  for n in nodes:
-    if n["note"] == note:
-      return n
-  print("node not found") #this is for debugging only, will remove later
-  return
-  
-def isUnique(note, melody, counter)
-  for n in range(0,counter):
-    if melody[n] == note:
-      return false
-  return true
+    chords = list()
+    for s in symbols:
+        chords.append(Chord.chordFromSymbol(s, 0))
+        chords.append(Chord.chordFromSymbol(s, 1))
+        chords.append(Chord.chordFromSymbol(s, 2))
+    return chords
 
-def getNodes(melody,palette):
-  nodes = list() 
-  counter = 0
-  for note in melody:
-    if isUnique(note, melody, counter):
-      chords = getChordChoices(note, palette)
-        for c in chords:
-          nodes.append(createNode(c, note, counter))
-    else:
-      updateNode(getNode(note, nodes), counter)
-    counter += 1
-  return nodes
-	
-def midiToScaleDegrees(midiNumbers, key)
-	degrees = list()
-	for n in midiNumbers:
-		degrees.append(key.getScaleDegree(n))
-	return degrees
+
+def getChordChoices(n, palette):
+    choices = list()
+    for c in palette:
+        if c.hasScaleDegree(n):
+            choices.append(c)
+    return choices
+
+
+def createNode(c, n, place, id):  # will implement IDs soon
+    # chord, melodic note, and places it occurs in the progression
+    places = list()  # list of indices, so the 1st note is represented by 0
+    places.append(place)
+    info = dict({"chord": c.__str__(), "note": n, "places": places, "ID": id})
+    return info
+
+
+def updateNode(node, otherPlace):  # node is a dictionary
+    node["places"].append(otherPlace)
+    return
+
+
+def getNodeFromID(id, nodes): #node from ID
+    for n in nodes:
+        if n["ID"] == id:
+            return n
+    print("node not found")  # this is for debugging only, will remove later
+    return
+
+
+def getNode(nt, nodes): #node from note and inversion
+    for n in nodes:
+        if n["note"] == nt:
+            return n
+    print("node not found")  # this is for debugging only, will remove later
+    return
+
+
+def isUnique(nt, melody, counter):
+    for n in range(0, counter):
+        if melody[n] == nt:
+            return False
+    return True
+
+
+def getNodes(melody, palette):
+    nodes = list()
+    counter = 0
+    noteCounter = 10
+    for n in melody:
+        idCounter = 0
+        if isUnique(n, melody, counter):
+            chords = getChordChoices(n, palette)
+            for c in chords:
+                nodes.append(createNode(c, n, counter, idCounter+noteCounter))
+                idCounter += 1
+        else:
+            existingNode = getNode(n, nodes)
+            existingID = existingNode["ID"]
+            updateNode(existingNode, counter)
+            updateNode(getNodeFromID(existingID+1, nodes), counter)
+            updateNode(getNodeFromID(existingID+2, nodes), counter)
+        counter += 1
+        noteCounter += 10
+
+    return nodes
+
+
+def midiToScaleDegrees(midiNumbers, k):
+    degrees = list()
+    for n in midiNumbers:
+        degrees.append(k.getScaleDegree(n))
+    return degrees
+
 
 def main():
-	# retrieve MIDI file
-	address = r"/Users/arun/Documents/testMelody1.mid"  # file path
+    # retrieve MIDI file
+    address = r"/Users/arun/Documents/testMelody1.mid"  # file path
 
-	melody = get_notes("Piano",address)
-	keySymbol = input("What is the key of this melody?: ")
-	key = Key.keyFromUser(keySymbol)
-	degrees = midiToScaleDegrees(melody, key) 
-	
-	#use degrees to generate the nodes
-	romanNumerals = list() #needed to ensure that this is in scope of main() instead of the if/else block
-	if key.usesMajorPalette:
-		romanNumerals = ["I", "ii", "iii", "IV", "V", "vi", "viio"]
-	else:
-		romanNumerals = ["i", "iio", "III", "iv", "v", "VI", "VII"]
-	chordPalette = getChordPalette(romanNumerals)
-	nodes = getNodes(degrees, chordPalette) #this will be passed to scoring algorithm 
-	print(nodes) 
+    melody = get_notes("Piano", address)
+    keySymbol = input("What is the key of this melody?: ")
+    k = Key.keyFromUser(keySymbol)
+    #degrees = midiToScaleDegrees(melody, k)
+    degrees = [1, 4, 5, 1]
+
+    # use degrees to generate the nodes
+    if k.usesMajorPalette():
+        romanNumerals = ["I", "ii", "iii", "IV", "V", "vi", "viio"]
+    else:
+        romanNumerals = ["i", "iio", "III", "iv", "v", "VI", "VII"]
+    chordPalette = getChordPalette(romanNumerals)
+    nodes = getNodes(degrees, chordPalette)  # this will be passed to scoring algorithm
+    print(nodes)
 
 
 if __name__ == '__main__':
-	main()
+    main()
