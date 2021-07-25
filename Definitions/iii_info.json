@@ -1,0 +1,37 @@
+{
+   "symbol": "iii",
+   "scaleDegrees": [3, 5, 7],
+   "next": [
+	
+      {
+         "symbol":"I",
+         "inversions": {"0": [1], "1": [2], "2": [0,2]}
+      },
+      
+      {
+         "symbol":"ii",
+         "inversions": {"0": [1,2], "1": [2]}
+      },
+      
+      {
+         "symbol":"IV",
+         "inversions": {"0": [0,1,2], "1": [1,2], "2": [2]}
+      },
+      
+      {
+         "symbol":"V",
+         "inversions": {"1": [1,2], "2": [1]}
+      },
+      
+      {
+         "symbol":"vi",
+         "inversions": {"0": [2], "1": [0,1], "2": [1]}
+      },
+      
+      {
+         "symbol":"viio",
+         "inversions": {"2": [0]}
+      }
+   ],
+   "validInversions": "*"
+}

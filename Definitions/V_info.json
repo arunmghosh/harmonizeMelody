@@ -1,0 +1,22 @@
+{
+   "symbol": "V",
+   "scaleDegrees": [5, 7, 2],
+   "next": [
+	
+      {
+         "symbol":"I",
+         "inversions": {"0": [0,1,2], "1": [0,1], "2": [0,1]}
+      },
+      
+      {
+         "symbol":"IV",
+         "inversions": {"1": [1]}
+      },
+      
+      {
+         "symbol":"vi",
+         "inversions": {"0": [0], "1": [0]}
+      }
+   ],
+   "validInversions": "*"
+}

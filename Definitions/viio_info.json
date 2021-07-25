@@ -1,0 +1,17 @@
+{
+   "symbol": "viio",
+   "scaleDegrees": [7, 2, 4],
+   "next": [
+	
+      {
+         "symbol":"I",
+         "inversions": {"0": [0], "1": [1], "2": [2]}
+      },
+      
+      {
+         "symbol":"V",
+         "inversions": {"0": [1], "1": [2], "2": [0]}
+      }
+   ],
+   "validInversions": "*"
+}
