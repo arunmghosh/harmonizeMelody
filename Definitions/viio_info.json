@@ -5,13 +5,13 @@
 	
       {
          "symbol":"I",
-         "inversions": {"0": [0], "1": [1], "2": [2]}
+         "inversions": {"1": [0,1]}
       },
       
       {
          "symbol":"V",
-         "inversions": {"0": [1], "1": [2], "2": [0]}
+         "inversions": {"1": [0,1,2]}
       }
    ],
-   "validInversions": "*"
+   "validInversions": [1]
 }

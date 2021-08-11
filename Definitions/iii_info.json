@@ -5,33 +5,33 @@
 	
       {
          "symbol":"I",
-         "inversions": {"0": [1], "1": [2], "2": [0,2]}
+         "inversions": {"0": [0,1]}
       },
       
       {
          "symbol":"ii",
-         "inversions": {"0": [1,2], "1": [2]}
+         "inversions": {"0": [0,1]}
       },
       
       {
          "symbol":"IV",
-         "inversions": {"0": [0,1,2], "1": [1,2], "2": [2]}
+         "inversions": {"0": [0,1]}
       },
       
       {
          "symbol":"V",
-         "inversions": {"1": [1,2], "2": [1]}
+         "inversions": {"1": [0,1,2]}
       },
       
       {
          "symbol":"vi",
-         "inversions": {"0": [2], "1": [0,1], "2": [1]}
+         "inversions": {"0": [0]}
       },
       
       {
          "symbol":"viio",
-         "inversions": {"2": [0]}
+         "inversions": {"0": [1]}
       }
    ],
-   "validInversions": "*"
+   "validInversions": [0]
 }
